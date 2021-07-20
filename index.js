@@ -22,7 +22,7 @@ Client.on("message",msg=>{
                         VC.join()
                             .then(()=> msg.channel.send(`> Joined <#${vcID}>`))       
                     })
-                    .err(console.log("> ChannelID is missing or invalid."))
+                    .catch(console.log("> ChannelID is missing or invalid."))
                 break;
             case 2:
                 Client.channels.fetch(vcID)
