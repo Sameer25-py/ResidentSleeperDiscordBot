@@ -22,7 +22,7 @@ Client.on("message",msg=>{
                         VC.join()
                             .then(()=> msg.channel.send(`> Joined <#${vcID}>`))       
                     })
-                    .catch(console.log("> ChannelID is missing or invalid."))
+                    .catch(()=>msg.channel.send("> ChannelID is missing or invalid."))
                 break;
             case 2:
                 Client.channels.fetch(vcID)
@@ -30,6 +30,7 @@ Client.on("message",msg=>{
                     VC.leave()
                     msg.channel.send(`> Left <#${vcID}>`)          
                 })
+                .catch(()=>msg.channel.send("> Can't find VC to disconnect from."))
                 break;
         }
     }
