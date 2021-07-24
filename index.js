@@ -3,6 +3,7 @@ const Config = require("./config.js")
 const Utility = require("./helpers.js")
 
 var vcID = null;
+const dummyMP3= "./dummy.mp3";
 
 Client.on("ready",()=>{
     console.log("Bot is running");
@@ -11,7 +12,6 @@ Client.on("ready",()=>{
 Client.on("message",msg=>{
     
     //generate event code for valid command
-    console.log(msg.content);
     let eventCode = Utility.GenerateEventCode(msg.content);
     if(eventCode){
         switch(eventCode){
@@ -20,7 +20,15 @@ Client.on("message",msg=>{
                 Client.channels.fetch(vcID)
                     .then(VC=>{                   
                         VC.join()
-                            .then(()=> msg.channel.send(`> Joined <#${vcID}>`))       
+                            .then((connection)=>{
+                                msg.channel.send(`> Joined <#${vcID}>`)
+                                var dispatcher = connection.play(dummyMP3);
+                                dispatcher.on("speaking",status=>{
+                                    if(!status){
+                                        dispatcher = connection.play(dummyMP3);
+                                    }
+                                }) 
+                            })       
                     })
                     .catch(()=>msg.channel.send("> ChannelID is missing or invalid."))
                 break;
